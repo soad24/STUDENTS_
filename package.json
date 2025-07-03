@@ -5,8 +5,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js",
+    "dev": "PORT=3001 nodemon server.js",
+    "start": "PORT=3001 node server.js",
     "build": "echo 'No build step required'",
     "preview": "npm start"
   },
