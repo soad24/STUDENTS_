@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تعريف مكونات ممارسة</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    input[type="checkbox"] { width: 1rem; height: 1rem; }
+    .participation-group {
+      @apply bg-gray-50 p-4 rounded-lg border border-gray-200;
+    }
+    .participation-group h3 {
+      @apply text-lg font-semibold mb-3 text-gray-700;
+    }
+    .form-preview {
+      @apply transition-all duration-300;
+    }
+    .form-preview:hover {
+      @apply shadow-lg;
+    }
+    .required-field::after {
+      content: " *";
+      color: #ef4444;
+    }
+    .form-container {
+      height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+    .dynamic-input {
+      @apply w-20 p-1 border rounded mr-2;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans min-h-screen">
+
+  <div class="max-w-7xl mx-auto mt-10 px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col lg:flex-row gap-8">
+      
+      <!-- قسم البناء (الجانب الأيمن) -->
+      <div class="bg-white p-8 rounded-3xl shadow-lg lg:w-1/2 form-container">
+        <h2 class="text-2xl font-bold mb-6 text-center text-gray-800 sticky top-0 bg-white py-2 z-10">
+          <i class="fas fa-tools mr-2"></i>بناء النموذج
+        </h2>
+
+        <form id="builder-form" class="space-y-4">
+          <!-- اسم الممارسة -->
+          <div>
+            <label class="block text-sm font-medium mb-1">اسم الممارسة</label>
+            <input type="text" id="practice-name" placeholder="مثال: مبادرة تطوعية" class="w-full p-2 border rounded" required />
+          </div>
+
+          <!-- اختيار نوع ومستوى المشاركة -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">نوع المشاركة</label>
+              <div class="space-y-1" id="participation-type-container">
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-type" value="حضوري او افتراضي" class="h-4 w-4" onchange="toggleNumberInput(this)"> حضوري او افتراضي 
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-type" value="حضور" class="h-4 w-4" onchange="toggleNumberInput(this)"> حضور 
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-type" value="تنظيم" class="h-4 w-4" onchange="toggleNumberInput(this)"> تنظيم 
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-type" value="تقديم" class="h-4 w-4" onchange="toggleNumberInput(this)"> تقديم 
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-type" value="عضو في مجلس الادارة" class="h-4 w-4" onchange="toggleNumberInput(this)"> عضو في مجلس الادارة 
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-type" value="عضو" class="h-4 w-4" onchange="toggleNumberInput(this)"> عضو  
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-type" value="المستوى الأساسي" class="h-4 w-4" onchange="toggleNumberInput(this)"> المستوى الأساسي   
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-type" value="المستوى المتوسط" class="h-4 w-4" onchange="toggleNumberInput(this)"> المستوى المتوسط   
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-type" value="المستوى المتقدم" class="h-4 w-4" onchange="toggleNumberInput(this)"> المستوى المتقدم    
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-type" value="المستوى المتخصص / الصناعي" class="h-4 w-4" onchange="toggleNumberInput(this)"> المستوى المتخصص / الصناعي   
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-type" value="مجال التخصص الاكاديمي" class="h-4 w-4" onchange="toggleNumberInput(this)"> مجال التخصص الاكاديمي   
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-type" value="غير مجال التخصص الاكاديمي" class="h-4 w-4" onchange="toggleNumberInput(this)"> غير مجال التخصص الاكاديمي  
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-type" value="مؤسسات العمل التطوعي المعتمدة من قبل وزارة التنمية الإجتماعية" class="h-4 w-4" onchange="toggleNumberInput(this)"> مؤسسات العمل التطوعي المعتمدة
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-type" value="نشر ورقة علمية في مجلة محكمة" class="h-4 w-4" onchange="toggleNumberInput(this)"> نشر ورقة علمية في مجلة محكمة   
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-type" value="الحصول على براءة الاختراع" class="h-4 w-4" onchange="toggleNumberInput(this)"> الحصول على براءة الاختراع     
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">مستوى المشاركة</label>
+              <div class="space-y-1" id="participation-level-container">
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-level" value="محليا او دوليا" class="h-4 w-4" onchange="toggleNumberInput(this)"> محليا او دوليا
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-level" value="خارج الفرع فقط" class="h-4 w-4" onchange="toggleNumberInput(this)"> خارج الفرع فقط
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-level" value="الفرع" class="h-4 w-4" onchange="toggleNumberInput(this)"> الفرع 
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-level" value="الجامعة" class="h-4 w-4" onchange="toggleNumberInput(this)"> الجامعة 
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-level" value="محلي" class="h-4 w-4" onchange="toggleNumberInput(this)"> محلي 
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" name="participation-level" value="دولي" class="h-4 w-4" onchange="toggleNumberInput(this)"> دولي  
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- الحقول الديناميكية -->
+          <div id="field-list" class="space-y-4 mt-6"></div>
+
+          <div class="flex justify-center gap-4 mt-6 sticky bottom-0 bg-white py-4 z-10">
+            <button type="button" onclick="addField()" 
+                    class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-200 flex items-center gap-2">
+              <i class="fas fa-plus"></i>
+              إضافة عنصر جديد
+            </button>
+            <button type="button" onclick="generateForm()" 
+                    class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition duration-200 flex items-center gap-2">
+              <i class="fas fa-cog"></i>
+              إنشاء النموذج
+            </button>
+            
+          </div>
+        </form>
+      </div>
+      
+      <!-- النموذج الناتج (الجانب الأيسر) -->
+      <div class="bg-white p-8 rounded-3xl shadow-lg lg:w-1/2 form-container">
+        <div class="flex justify-between items-center mb-6 sticky top-0 bg-white py-2 z-10">
+          <h2 class="text-2xl font-bold text-gray-800">
+            <i class="fas fa-file-alt mr-2"></i>
+            <span id="form-title">النموذج الناتج</span>
+          </h2>
+          <button onclick="clearForm()" class="text-red-600 hover:text-red-800 flex items-center gap-1">
+            <i class="fas fa-trash-alt"></i> مسح النموذج
+          </button>
+        </div>
+        <form id="final-form" class="space-y-6 form-preview"></form>
+        <div id="calculation-result" class="mt-6 p-4 bg-blue-50 rounded-lg hidden">
+          <h3 class="text-lg font-semibold text-blue-800">نتيجة الحساب</h3>
+          <p id="total-value" class="text-2xl font-bold text-blue-600 mt-2">0</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let fieldIndex = 0;
+
+    // إظهار/إخفاء حقل الإدخال الرقمي بجانب الخيار المحدد
+    function toggleNumberInput(checkbox) {
+      const container = checkbox.closest('label');
+      const inputId = `input-${checkbox.value.replace(/\s+/g, '-')}`;
+      
+      if (checkbox.checked) {
+        if (!document.getElementById(inputId)) {
+          const input = document.createElement('input');
+          input.type = 'number';
+          input.id = inputId;
+          input.className = 'dynamic-input';
+          input.placeholder = 'القيمة';
+          input.dataset.valueKey = checkbox.value;
+          container.appendChild(input);
+        }
+      } else {
+        const existingInput = document.getElementById(inputId);
+        if (existingInput) existingInput.remove();
+      }
+    }
+
+    // حساب القيمة الإجمالية
+    function calculateTotal() {
+      let total = 0;
+      
+      // جمع قيم نوع المشاركة
+      const typeInputs = document.querySelectorAll('#participation-type-container input[type="number"]');
+      typeInputs.forEach(input => {
+        const value = parseFloat(input.value) || 0;
+        total += value;
+      });
+      
+      // جمع قيم مستوى المشاركة
+      const levelInputs = document.querySelectorAll('#participation-level-container input[type="number"]');
+      levelInputs.forEach(input => {
+        const value = parseFloat(input.value) || 0;
+        total += value;
+      });
+      
+      // عرض النتيجة
+      document.getElementById('calculation-result').classList.remove('hidden');
+      document.getElementById('total-value').textContent = total;
+    }
+
+    // باقي الدوال كما هي (addField, toggleOptions, clearForm, generateForm)
+    function addField() {
+      const container = document.getElementById('field-list');
+      const index = fieldIndex++;
+
+      const html = `
+        <div class="p-6 border border-gray-200 rounded-lg bg-gray-50 space-y-4 relative shadow-sm hover:shadow-md transition duration-200" data-index="${index}">
+          <button type="button" onclick="this.parentElement.remove()" 
+                  class="absolute top-2 left-2 text-red-600 hover:text-red-800 transition duration-200">
+            <i class="fas fa-times"></i>
+          </button>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">اسم الحقل</label>
+            <input type="text" name="label_${index}" 
+                   class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                   placeholder="مثال: تاريخ التنفيذ">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">نوع الحقل</label>
+            <select name="type_${index}" 
+                    class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                    onchange="toggleOptions(this, ${index})">
+              <option value="text">نص</option>
+              <option value="number">رقم</option>
+              <option value="date">تاريخ</option>
+              <option value="daterange">نطاق تاريخ</option>
+              <option value="time">وقت</option>
+              <option value="file">ملف</option>
+              <option value="select">قائمة</option>
+            </select>
+          </div>
+          <div id="options_${index}" class="hidden">
+            <label class="block text-sm font-medium text-gray-700 mb-2">عناصر القائمة (افصل بينها بفاصلة)</label>
+            <input type="text" name="options_${index}" 
+                   class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                   placeholder="مثال: خيار1, خيار2, خيار3">
+          </div>
+          <div>
+            <label class="inline-flex items-center space-x-2">
+              <input type="checkbox" name="required_${index}" class="h-5 w-5 text-blue-600">
+              <span class="text-gray-700">إلزامي</span>
+            </label>
+          </div>
+        </div>
+      `;
+
+      container.insertAdjacentHTML('beforeend', html);
+    }
+
+    function toggleOptions(selectElement, index) {
+      const optionsDiv = document.getElementById(`options_${index}`);
+      if (selectElement.value === 'select') {
+        optionsDiv.classList.remove('hidden');
+      } else {
+        optionsDiv.classList.add('hidden');
+      }
+    }
+
+    function clearForm() {
+      document.getElementById('final-form').innerHTML = '';
+      document.getElementById('form-title').textContent = 'النموذج الناتج';
+      document.getElementById('calculation-result').classList.add('hidden');
+    }
+
+    function generateForm() {
+      const form = document.getElementById('final-form');
+      const formTitle = document.getElementById('form-title');
+      form.innerHTML = '';
+
+      const name = document.getElementById('practice-name').value || 'نموذج بدون اسم';
+      formTitle.textContent = name;
+
+      // جمع خيارات نوع المشاركة المختارة
+      const selectedTypes = Array.from(document.querySelectorAll('input[name="participation-type"]:checked'))
+        .map(el => el.value);
+
+      // جمع خيارات مستوى المشاركة المختارة
+      const selectedLevels = Array.from(document.querySelectorAll('input[name="participation-level"]:checked'))
+        .map(el => el.value);
+
+      // إضافة نوع المشاركة إذا كان هناك خيارات مختارة
+      if (selectedTypes.length > 0) {
+        const typeGroup = document.createElement('div');
+        typeGroup.className = 'mb-6';
+
+        const typeLabel = document.createElement('label');
+        typeLabel.className = 'block text-sm font-medium text-gray-700 mb-2 required-field';
+        typeLabel.textContent = 'نوع المشاركة';
+
+        const typeSelect = document.createElement('select');
+        typeSelect.className = 'w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500';
+        typeSelect.required = true;
+        typeSelect.name = 'selected-participation-type';
+
+        // إضافة خيار افتراضي
+        const defaultTypeOption = document.createElement('option');
+        defaultTypeOption.value = '';
+        defaultTypeOption.textContent = '-- اختر نوع المشاركة --';
+        typeSelect.appendChild(defaultTypeOption);
+
+        // إضافة الخيارات المختارة
+        selectedTypes.forEach(type => {
+          const option = document.createElement('option');
+          option.value = type;
+          option.textContent = type;
+          typeSelect.appendChild(option);
+        });
+
+        typeGroup.appendChild(typeLabel);
+        typeGroup.appendChild(typeSelect);
+        form.appendChild(typeGroup);
+      }
+
+      // إضافة مستوى المشاركة إذا كان هناك خيارات مختارة
+      if (selectedLevels.length > 0) {
+        const levelGroup = document.createElement('div');
+        levelGroup.className = 'mb-6';
+
+        const levelLabel = document.createElement('label');
+        levelLabel.className = 'block text-sm font-medium text-gray-700 mb-2 required-field';
+        levelLabel.textContent = 'مستوى المشاركة';
+
+        const levelSelect = document.createElement('select');
+        levelSelect.className = 'w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500';
+        levelSelect.required = true;
+        levelSelect.name = 'selected-participation-level';
+
+        // إضافة خيار افتراضي
+        const defaultLevelOption = document.createElement('option');
+        defaultLevelOption.value = '';
+        defaultLevelOption.textContent = '-- اختر مستوى المشاركة --';
+        levelSelect.appendChild(defaultLevelOption);
+
+        // إضافة الخيارات المختارة
+        selectedLevels.forEach(level => {
+          const option = document.createElement('option');
+          option.value = level;
+          option.textContent = level;
+          levelSelect.appendChild(option);
+        });
+
+        levelGroup.appendChild(levelLabel);
+        levelGroup.appendChild(levelSelect);
+        form.appendChild(levelGroup);
+      }
+
+      // باقي الحقول المضافة يدوياً
+      const fields = document.querySelectorAll('[data-index]');
+      fields.forEach(f => {
+        const index = f.dataset.index;
+        const label = f.querySelector(`[name=label_${index}]`).value;
+        const type = f.querySelector(`[name=type_${index}]`).value;
+        const required = f.querySelector(`[name=required_${index}]`).checked;
+        const options = f.querySelector(`[name=options_${index}]`)?.value?.split(',') || [];
+
+        const fieldGroup = document.createElement('div');
+        fieldGroup.className = 'mb-6';
+
+        const labelElement = document.createElement('label');
+        labelElement.className = `block text-sm font-medium text-gray-700 mb-2 ${required ? 'required-field' : ''}`;
+        labelElement.textContent = label;
+
+        let inputElement;
+        if (type === 'select') {
+          inputElement = document.createElement('select');
+          inputElement.className = 'w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500';
+          const defaultOption = document.createElement('option');
+          defaultOption.textContent = '-- اختر --';
+          defaultOption.value = '';
+          inputElement.appendChild(defaultOption);
+          options.forEach(opt => {
+            const option = document.createElement('option');
+            option.textContent = opt.trim();
+            inputElement.appendChild(option);
+          });
+        } else if (type === 'daterange') {
+          inputElement = document.createElement('input');
+          inputElement.type = 'text';
+          inputElement.className = 'w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500';
+          inputElement.setAttribute('data-flatpickr', 'range');
+        } else if (type === 'time') {
+          inputElement = document.createElement('input');
+          inputElement.type = 'time';
+          inputElement.className = 'w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500';
+        } else if (type === 'file') {
+          inputElement = document.createElement('input');
+          inputElement.type = 'file';
+          inputElement.className = 'w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500';
+        } else {
+          inputElement = document.createElement('input');
+          inputElement.type = type;
+          inputElement.className = 'w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500';
+        }
+
+        if (required) inputElement.required = true;
+        inputElement.name = `field_${index}`;
+
+        fieldGroup.appendChild(labelElement);
+        fieldGroup.appendChild(inputElement);
+        form.appendChild(fieldGroup);
+
+        if (type === 'daterange') {
+          flatpickr(inputElement, {
+            mode: 'range',
+            dateFormat: 'Y-m-d',
+            locale: 'ar'
+          });
+        }
+      });
+    }
+
+    document.getElementById('builder-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      alert("✔️ النموذج تم حفظه (تجريبيًا فقط في هذه الصفحة).");
+    });
+  </script>
+</body>
+</html>
