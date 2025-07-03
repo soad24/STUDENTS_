@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام أثر - سجل الممارسات المهنية</title>
+    
+    <!-- Bootstrap RTL CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Cairo Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4682B4;
+            --secondary-color: #2E8B57;
+            --accent-color: #228B22;
+            --success-color: #9ACD32;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #6A5ACD;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            --gradient-success: linear-gradient(135deg, var(--success-color) 0%, var(--accent-color) 100%);
+            --gradient-warning: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-info: linear-gradient(135deg, var(--info-color) 0%, #9370DB 100%);
+            
+            --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+            --border-radius: 1rem;
+            --border-radius-sm: 0.5rem;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--light-color);
+            line-height: 1.6;
+            color: var(--dark-color);
+        }
+
+        .hero-section {
+            background: var(--gradient-primary);
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/><circle cx="900" cy="800" r="80" fill="url(%23a)"/></svg>') no-repeat center center;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+        }
+
+        .university-logo {
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.9);
+            animation: pulse 2s infinite;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.8;
+            line-height: 1.8;
+        }
+
+        .floating-cards {
+            position: relative;
+            width: 100%;
+            height: 500px;
+        }
+
+        .floating-card {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius-sm);
+            padding: 1.5rem;
+            color: white;
+            text-align: center;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-card i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .card-1 {
+            top: 10%;
+            right: 10%;
+            animation-delay: 0s;
+        }
+
+        .card-2 {
+            top: 30%;
+            left: 5%;
+            animation-delay: 1.5s;
+        }
+
+        .card-3 {
+            bottom: 30%;
+            right: 5%;
+            animation-delay: 3s;
+        }
+
+        .card-4 {
+            bottom: 10%;
+            left: 15%;
+            animation-delay: 4.5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .login-container {
+            background: var(--gradient-primary);
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/><circle cx="900" cy="800" r="80" fill="url(%23a)"/></svg>') no-repeat center center;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        .login-card, .login-info-card {
+            border: none;
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .sidebar {
+            min-height: calc(100vh - 56px);
+            box-shadow: var(--shadow-sm);
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .nav-link {
+            border-radius: var(--border-radius-sm);
+            margin: 0.2rem 0;
+            transition: var(--transition);
+            color: var(--dark-color);
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(70, 130, 180, 0.1);
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .nav-link.active {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card {
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            background: white;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+        }
+
+        .stats-card {
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .stats-card-success {
+            background: var(--gradient-success);
+        }
+
+        .stats-card-warning {
+            background: var(--gradient-warning);
+        }
+
+        .stats-card-info {
+            background: var(--gradient-info);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn {
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+        }
+
+        .btn-success {
+            background: var(--gradient-success);
+            border: none;
+        }
+
+        .btn-warning {
+            background: var(--gradient-warning);
+            border: none;
+        }
+
+        .btn-info {
+            background: var(--gradient-info);
+            border: none;
+        }
+
+        .table {
+            border-radius: var(--border-radius-sm);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            background: white;
+        }
+
+        .table th {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .table tbody tr {
+            transition: var(--transition);
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(70, 130, 180, 0.05);
+            transform: scale(1.01);
+        }
+
+        .badge {
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--border-radius-sm);
+        }
+
+        .form-control, .form-select {
+            border-radius: var(--border-radius-sm);
+            border: 2px solid #e9ecef;
+            transition: var(--transition);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(70, 130, 180, 0.25);
+        }
+
+        .alert {
+            border-radius: var(--border-radius-sm);
+            border: none;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .d-none { display: none !important; }
+        .d-block { display: block !important; }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .hero-subtitle { font-size: 1.2rem; }
+            .floating-cards { display: none; }
+            .sidebar {
+                position: fixed;
+                top: 56px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 56px);
+                z-index: 1000;
+                transition: left 0.3s ease;
+            }
+            .sidebar.show { left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Landing Page -->
+    <div id="landingPage">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-overlay"></div>
+            <div class="container">
+                <div class="row min-vh-100 align-items-center">
+                    <div class="col-lg-6">
+                        <div class="hero-content">
+                            <div class="university-logo mb-4">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h1 class="hero-title">نظام أثر</h1>
+                            <h2 class="hero-subtitle">سجل الممارسات المهنية</h2>
+                            <p class="hero-description">
+                                نظام إلكتروني مركزي لتوثيق وإدارة جميع الممارسات المهنية غير الأكاديمية 
+                                للطلبة في جامعة التقنية والعلوم التطبيقية
+                            </p>
+                            <div class="hero-buttons">
+                                <button class="btn btn-primary btn-lg me-3" onclick="showLoginPage()">
+                                    <i class="fas fa-sign-in-alt me-2"></i>
+                                    تسجيل الدخول
+                                </button>
+                                <button class="btn btn-outline-light btn-lg" onclick="scrollToFeatures()">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    اعرف المزيد
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="floating-cards">
+                            <div class="floating-card card-1">
+                                <i class="fas fa-certificate"></i>
+                                <span>شهادات مهنية</span>
+                            </div>
+                            <div class="floating-card card-2">
+                                <i class="fas fa-users"></i>
+                                <span>ورش عمل</span>
+                            </div>
+                            <div class="floating-card card-3">
+                                <i class="fas fa-trophy"></i>
+                                <span>مسابقات</span>
+                            </div>
+                            <div class="floating-card card-4">
+                                <i class="fas fa-handshake"></i>
+                                <span>تدريب عملي</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-5 bg-white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center mb-5">
+                        <h2 class="display-4 fw-bold text-dark">مميزات النظام</h2>
+                        <p class="lead text-secondary">نظام شامل لإدارة وتوثيق الممارسات المهنية</p>
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-file-alt text-primary" style="font-size: 3rem;"></i>
+                            </div>
+                            <h4>توثيق شامل</h4>
+                            <p>توثيق جميع الممارسات المهنية والأنشطة اللاصفية بطريقة منظمة ومعتمدة</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-star text-warning" style="font-size: 3rem;"></i>
+                            </div>
+                            <h4>نظام نقاط تلقائي</h4>
+                            <p>احتساب النقاط تلقائياً بناءً على نوع ومستوى المشاركة في الممارسات المهنية</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-check-circle text-success" style="font-size: 3rem;"></i>
+                            </div>
+                            <h4>مراجعة واعتماد</h4>
+                            <p>نظام مراجعة متدرج يضمن جودة وصحة المعلومات المدخلة</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container d-none">
+        <div class="container">
+            <div class="row justify-content-center min-vh-100 align-items-center">
+                <div class="col-lg-10">
+                    <div class="row">
+                        <!-- Login Form -->
+                        <div class="col-lg-6">
+                            <div class="card shadow-lg login-card">
+                                <div class="card-body p-5">
+                                    <div class="text-center mb-4">
+                                        <button class="btn btn-link text-muted p-0 mb-3" onclick="showLandingPage()">
+                                            <i class="fas fa-arrow-right me-2"></i>
+                                            العودة للصفحة الرئيسية
+                                        </button>
+                                        <div>
+                                            <i class="fas fa-graduation-cap text-primary" style="font-size: 4rem;"></i>
+                                        </div>
+                                        <h2 class="mt-3 mb-1">نظام أثر</h2>
+                                        <p class="text-muted">سجل الممارسات المهنية</p>
+                                    </div>
+
+                                    <form id="loginForm">
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">البريد الإلكتروني</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                                <input type="email" class="form-control" id="email" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label">كلمة المرور</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                                <input type="password" class="form-control" id="password" required>
+                                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 form-check">
+                                            <input class="form-check-input" type="checkbox" id="remember">
+                                            <label class="form-check-label" for="remember">
+                                                تذكرني
+                                            </label>
+                                        </div>
+
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary btn-lg">
+                                                <i class="fas fa-sign-in-alt me-2"></i>
+                                                تسجيل الدخول
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Types Info -->
+                        <div class="col-lg-6">
+                            <div class="card shadow-lg login-info-card">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-users me-2"></i>
+                                        بيانات تسجيل الدخول للاختبار
+                                    </h5>
+                                </div>
+                                <div class="card-body p-4">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <strong>ملاحظة:</strong> يمكنك استخدام أي من البيانات التالية لتسجيل الدخول واختبار النظام
+                                    </div>
+
+                                    <!-- Test Accounts -->
+                                    <div class="mb-3 p-3 border rounded">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-user-graduate"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">حساب الطالب</h6>
+                                                <small class="text-muted">يمكن إضافة وإدارة الممارسات المهنية</small>
+                                            </div>
+                                        </div>
+                                        <div class="small">
+                                            <div><strong>البريد:</strong> student@athar.om</div>
+                                            <div><strong>كلمة المرور:</strong> password123</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 p-3 border rounded">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-search"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">حساب المراجع</h6>
+                                                <small class="text-muted">يمكن مراجعة وتدقيق الممارسات المهنية</small>
+                                            </div>
+                                        </div>
+                                        <div class="small">
+                                            <div><strong>البريد:</strong> reviewer@athar.om</div>
+                                            <div><strong>كلمة المرور:</strong> password123</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 p-3 border rounded">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-stamp"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">حساب المعتمد</h6>
+                                                <small class="text-muted">يمكن اعتماد الممارسات المهنية</small>
+                                            </div>
+                                        </div>
+                                        <div class="small">
+                                            <div><strong>البريد:</strong> approver@athar.om</div>
+                                            <div><strong>كلمة المرور:</strong> password123</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-3 border rounded">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-user-shield"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">حساب المدير</h6>
+                                                <small class="text-muted">صلاحيات كاملة لإدارة النظام</small>
+                                            </div>
+                                        </div>
+                                        <div class="small">
+                                            <div><strong>البريد:</strong> admin@athar.om</div>
+                                            <div><strong>كلمة المرور:</strong> password123</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="d-none">
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#" onclick="showDashboard()">
+                    <i class="fas fa-graduation-cap me-2"></i>
+                    نظام أثر
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showDashboard()">
+                                <i class="fas fa-home me-1"></i>
+                                الرئيسية
+                            </a>
+                        </li>
+                        <li class="nav-item" id="practicesNavItem">
+                            <a class="nav-link" href="#" onclick="showPractices()">
+                                <i class="fas fa-list me-1"></i>
+                                <span id="practicesNavText">ممارساتي المهنية</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" id="addPracticeNavItem">
+                            <a class="nav-link" href="#" onclick="showAddPractice()">
+                                <i class="fas fa-plus me-1"></i>
+                                إضافة ممارسة
+                            </a>
+                        </li>
+                        <li class="nav-item" id="templatesNavItem" style="display: none;">
+                            <a class="nav-link" href="#" onclick="showTemplates()">
+                                <i class="fas fa-file-alt me-1"></i>
+                                قوالب الممارسات
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i>
+                                <span id="userName">المستخدم</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-user-edit me-2"></i>الملف الشخصي</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>تسجيل الخروج</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar -->
+                <nav class="col-md-3 col-lg-2 d-md-block bg-white sidebar collapse">
+                    <div class="position-sticky pt-3">
+                        <ul class="nav flex-column" id="sidebarNav">
+                            <!-- Navigation items will be populated by JavaScript -->
+                        </ul>
+                    </div>
+                </nav>
+
+                <!-- Main Content Area -->
+                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                    <div id="pageContent">
+                        <!-- Content will be loaded here -->
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="js/app.js"></script>
+</body>
+</html>
