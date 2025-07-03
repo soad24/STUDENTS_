@@ -34,21 +34,26 @@ class PracticeTypeTemplateController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'participation_types' => 'required|array',
-            'participation_levels' => 'required|array',
-            'custom_fields' => 'nullable|array',
-            'point_calculation_rules' => 'nullable|array',
         ]);
+
+        // Parse JSON data from the form
+        $participationTypes = json_decode($request->input('participation_types', '[]'), true);
+        $participationLevels = json_decode($request->input('participation_levels', '[]'), true);
+        $customFields = json_decode($request->input('custom_fields', '[]'), true);
 
         $template = PracticeTypeTemplate::create([
             'name' => $request->name,
             'description' => $request->description,
-            'participation_types' => $request->participation_types,
-            'participation_levels' => $request->participation_levels,
-            'custom_fields' => $request->custom_fields ?? [],
-            'point_calculation_rules' => $request->point_calculation_rules ?? [],
+            'participation_types' => $participationTypes,
+            'participation_levels' => $participationLevels,
+            'custom_fields' => $customFields,
+            'point_calculation_rules' => [],
             'created_by' => auth()->id(),
         ]);
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'template' => $template]);
+        }
 
         return redirect()->route('admin.templates.index')
             ->with('success', 'تم إنشاء قالب الممارسة المهنية بنجاح');
@@ -69,19 +74,19 @@ class PracticeTypeTemplateController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'participation_types' => 'required|array',
-            'participation_levels' => 'required|array',
-            'custom_fields' => 'nullable|array',
-            'point_calculation_rules' => 'nullable|array',
         ]);
+
+        // Parse JSON data from the form
+        $participationTypes = json_decode($request->input('participation_types', '[]'), true);
+        $participationLevels = json_decode($request->input('participation_levels', '[]'), true);
+        $customFields = json_decode($request->input('custom_fields', '[]'), true);
 
         $template->update([
             'name' => $request->name,
             'description' => $request->description,
-            'participation_types' => $request->participation_types,
-            'participation_levels' => $request->participation_levels,
-            'custom_fields' => $request->custom_fields ?? [],
-            'point_calculation_rules' => $request->point_calculation_rules ?? [],
+            'participation_types' => $participationTypes,
+            'participation_levels' => $participationLevels,
+            'custom_fields' => $customFields,
         ]);
 
         return redirect()->route('admin.templates.index')
